@@ -1,0 +1,14 @@
+version: '3'
+networks: 
+    banco:
+services:
+    db:
+        container_name: mssql
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        ports:
+          - "1433:1433"
+        environment: 
+            ACCEPT_EULA: Y
+            SA_PASSWORD: "T5r4e3t1ps9"
+        networks: 
+          -  banco
