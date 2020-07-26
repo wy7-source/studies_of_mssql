@@ -93,3 +93,19 @@ WHERE Data_Pub BETWEEN '20000101' AND '20050101'
 OR Data_Pub BETWEEN '20100101' AND '20140101'
 AND Preco_Livro BETWEEN 40.00 AND 70.00
 ORDER BY Data_Pub DESC;
+
+-- Usando Like e Not like
+-- Usado para filtragens com a clausula Where, usamos alguns caracteres coringas:
+-- '_' Qualquer caractere único.
+-- '%' Qualquer cadeia de 0 ou mais caracteres.
+-- "[]" Qualquer caracter único no intervalo ou conjunto especificado ([a-h];[aeiou])
+-- "[^]" Qualquer caracter único no intervalo ou conjunto especificado (^[a-h];^[aeiou])
+SELECT * FROM tbl_livro
+WHERE Nome_Livro LIKE 'F%';
+-- o segundo caracter tem que ser i ou s...
+SELECT * FROM tbl_livro
+WHERE Nome_Livro LIKE '_[is]%';
+-- Coringa para 2° letra e negativa
+SELECT Nome_Livro
+FROM tbl_livro
+WHERE Nome_Livro NOT LIKE '_i%';
