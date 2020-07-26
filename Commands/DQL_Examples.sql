@@ -156,3 +156,13 @@ SELECT Li.Nome_Livro, LI.ID_Autor, Au.Nome_Autor
 FROM tbl_livro AS Li
 FULL JOIN tbl_autores AS Au
 ON Li.ID_Autor = Au.ID_Autor;
+
+
+-- Usando IN
+-- Aplica-se a subconsultas, ou listas de valores.
+-- Quando se trata de lista com um intervalo definido, é parecido com o Between...
+SELECT * FROM tbl_livro
+WHERE ID_Autor IN (1,2);
+-- Negativa
+SELECT * FROM tbl_livro
+WHERE ID_Autor NOT IN (1,2);
