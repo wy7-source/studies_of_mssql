@@ -27,3 +27,11 @@ VALUES
 ('Fedora and Red Hat Linux', 9780133477436, '20140110', 62.24, 3, 1),
 ('Windows Server 2012 Inside Out',9780735666313, '20130125', 66.80, 4, 3),
 ('Microsoft Exchange Server 2010',9780735640610, '20101201', 45.30, 4, 3)
+
+
+-- ABOUT TRUNCATE's
+-- Rápido e fácil de limpar uma tabela inteira, sem logs,
+-- como no MySql/PostgreSQL/OracleDB...
+
+-- TRUNCATE TABLE tabela
+
