@@ -1,0 +1,2 @@
+-- ABOUT INSERT's
+-- Bem padrão Mysql/PostgreSQL/OracleDB
