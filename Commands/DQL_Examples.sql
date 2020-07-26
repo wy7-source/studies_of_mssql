@@ -82,3 +82,14 @@ SELECT COUNT(*) FROM tbl_autores;
 SELECT AVG(Preco_Livro) FROM tbl_livro;
 -- SUM
 SELECT SUM(Preco_Livro) FROM tbl_livro;
+
+-- Usando Between 
+-- Usado para seleções de intervalos de filtragem.
+SELECT * FROM tbl_livro
+WHERE Data_Pub BETWEEN '20040517' AND '20110517';
+-- Composto
+SELECT * FROM tbl_livro
+WHERE Data_Pub BETWEEN '20000101' AND '20050101'
+OR Data_Pub BETWEEN '20100101' AND '20140101'
+AND Preco_Livro BETWEEN 40.00 AND 70.00
+ORDER BY Data_Pub DESC;
