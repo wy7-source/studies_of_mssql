@@ -22,3 +22,8 @@ SELECT Nome_Livro, Preco_Livro FROM tbl_livro
 -- para exibir somente os valores individuais, usamos:
 SELECT DISTINCT ID_Autor
 FROM tbl_livro;
+
+-- Usando WHERE
+-- filtragem...
+SELECT Nome_Livro, Data_Pub FROM tbl_livro WHERE ID_Autor = 1;
+SELECT ID_Autor, Nome_Autor FROM tbl_autores WHERE Sobrenome_Autor = 'Stanek';
