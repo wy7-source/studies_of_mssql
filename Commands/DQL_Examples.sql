@@ -25,6 +25,7 @@ FROM tbl_livro;
 
 -- Usando WHERE
 -- filtragem...
+-- O operador '=', NÃO TRABALHA COM VALORES NULL... no caso, seria "... where id is null..."
 SELECT Nome_Livro, Data_Pub FROM tbl_livro WHERE ID_Autor = 1;
 SELECT ID_Autor, Nome_Autor FROM tbl_autores WHERE Sobrenome_Autor = 'Stanek';
 -- Com Condicionais
@@ -132,3 +133,26 @@ INNER JOIN tbl_editoras AS E
 ON L.ID_editora = E.ID_editora
 WHERE E.Nome_Editora LIKE 'O%'
 ORDER BY L.Preco_Livro ASC;
+
+---- LEFT Join
+---- Nos trás todas as linhas da tabela a esquerda, mesmo se não houver correspondencia
+---- na tabela a direita.
+---- Use-case, podemos usa-lo para trazer livros, mesmo sem autores.
+SELECT * FROM tbl_livro as Esquerda
+LEFT JOIN tbl_autores as Direita
+ON Esquerda.ID_Autor = Direita.Id_Autor;
+
+---- RIGHT Join
+---- Inverso do LEFT, nos trás todas as linhas da tabela a direita, mesmo se não houver correspondencia
+---- na tabela a esquerda.
+SELECT * FROM tbl_autores as Esquerda
+LEFT JOIN tbl_livro as Direita
+ON Esquerda.ID_Autor = Direita.Id_Autor;
+---- Use-case, podemos usa-lo para trazer autores, mesmo sem livros.
+
+---- Full Join
+---- Faz um catado de tudo mesmo, de todas as tabelas que você passar.
+SELECT Li.Nome_Livro, LI.ID_Autor, Au.Nome_Autor
+FROM tbl_livro AS Li
+FULL JOIN tbl_autores AS Au
+ON Li.ID_Autor = Au.ID_Autor;
