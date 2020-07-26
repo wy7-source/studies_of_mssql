@@ -22,9 +22,7 @@ ON PRIMARY
 );
 
 -- E assim como o MySql, usamos a Instrução USE.
-
 USE db_Biblioteca;
-
 
 -- Temos o comando especifico do SQL SERVER, que nos explicita
 -- toda as infos de criação,status, o dono e id do banco, e etc...
@@ -33,7 +31,6 @@ USE db_Biblioteca;
 
 -- ABOUT TABLES
 -- Temos aqui, a sintaxe bem padrão mesmo.
-
 CREATE TABLE tbl_livro
 (
     -- Identity é o auto-increment do MySql/PostgreSQL/OracleDB, o primeiro
@@ -85,7 +82,6 @@ ADD ID_Editora SMALLINT NOT NULL
 CONSTRAINT fk_ID_Editora FOREIGN KEY (ID_Editora)
 REFERENCES tbl_editoras;
 
-
 -- ALTER's
 -- è recomendavel fazer isso daqui sem ter dados na tabela
 -- senão vai ser complicado...
@@ -97,7 +93,6 @@ ALTER COLUMN ISBN VARCHAR(25) NOT NULL;
 -- Caso ela tenha, é necessário um Cascade...
 -- DROP TABLE nome_tabela;
 
-
 -- Campos Calculados
 -- Campos calculados, usam valores de outros campos,
 -- para calculos numéricos, e armazena o resultado em sí.
@@ -105,7 +100,6 @@ ALTER COLUMN ISBN VARCHAR(25) NOT NULL;
 -- Use-case: Quando temos um Carrinho de compras de um E-Commerce,
 -- e vamos ter um campo "total", referente a cada produto, seu preço
 -- unitário, e a quantidade dele.
-
 CREATE TABLE tbl_carrinho
 (
     codProduto SMALLINT IDENTITY,
@@ -123,3 +117,9 @@ INSERT INTO tbl_carrinho VALUES('Livro F', 13.00, 4);
 -- Como podemos ver, foi calculado o Total, perfeitamente.
 DROP TABLE tbl_carrinho;
 
+-- ABOUT INDEX
+-- Index permitem que os bancos encontrem as colunas mais rapidamente ( em BD's grantes ).
+-- Ideal para tabelas com muitas consultas, pois é um pouco custoso pra atualizar.
+-- Então se for pra atualizar com index, e a tabela ser pouco consultada, nem vale a pena.
+CREATE INDEX Idx_Nome_Livro
+ON tbl_livro(Nome_Livro);
