@@ -17,3 +17,8 @@ SELECT Nome_Livro, ID_Editora FROM tbl_livro
  ORDER BY ID_Editora;
 SELECT Nome_Livro, Preco_Livro FROM tbl_livro
  ORDER BY Preco_Livro DESC;
+
+--  Usando Distinct ( algumas colunas tem valores duplicados )
+-- para exibir somente os valores individuais, usamos:
+SELECT DISTINCT ID_Autor
+FROM tbl_livro;
