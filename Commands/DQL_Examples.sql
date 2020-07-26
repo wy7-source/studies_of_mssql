@@ -49,3 +49,13 @@ FROM tbl_livro ORDER BY Nome_Livro DESC;
 SELECT Nome_Livro AS Livro,
         ID_Autor AS Autor
 FROM tbl_livro;
+
+-- Usando Union
+-- Podemos juntar 2 saídas Selects, sem repetições...
+-- Precisamos que ambas tabelas, tenham a mesma quantidade de colunas, tipos e ordem.
+SELECT Nome_Autor FROM tbl_autores
+UNION
+SELECT Nome_Livro FROM tbl_livro;
+-- Um melhor use-case do Union, é quando por exemplo temos um supermercado, com produtos
+-- cadastrados em tabelas diferentes, separados por gênero (EX: limpeza, higiene, farináceos ),
+-- e quisessemos por exemplo fazer um relatório, com todos os produtos.
