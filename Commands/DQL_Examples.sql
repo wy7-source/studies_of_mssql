@@ -109,3 +109,26 @@ WHERE Nome_Livro LIKE '_[is]%';
 SELECT Nome_Livro
 FROM tbl_livro
 WHERE Nome_Livro NOT LIKE '_i%';
+
+-- Usando Joins
+-- Quando usamos dados provenientes de outras tabelas baseados em relacionamento.
+---- Inner Join
+---- Retorna as linhas que tem correspondencia nas duas tabelas.
+---- Podemos usar alias antes de declara-los, porque antes da execução da query, o 
+---- bloco todo é avaliado, e se tiver um erro, não é executado...
+SELECT * FROM tbl_livro
+INNER JOIN tbl_autores
+ON tbl_livro.ID_Autor = tbl_autores.ID_Autor; 
+-- Composta ( implementando o que vimos de DQL até agora ).
+SELECT L.Nome_Livro AS Livro,
+A.Nome_autor AS Autor,
+E.Nome_Editora AS Editora,
+L.Preco_Livro AS 'Preço do Livro',
+L.Data_Pub AS 'Data de Publicação'
+FROM tbl_livro L
+INNER JOIN tbl_autores AS A
+ON L.ID_autor = A.ID_autor
+INNER JOIN tbl_editoras AS E
+ON L.ID_editora = E.ID_editora
+WHERE E.Nome_Editora LIKE 'O%'
+ORDER BY L.Preco_Livro ASC;
