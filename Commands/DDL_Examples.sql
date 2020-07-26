@@ -39,6 +39,8 @@ CREATE TABLE tbl_livro
     -- Identity é o auto-increment do MySql/PostgreSQL/OracleDB, o primeiro
     -- parametro, é o numero inicial, e a segunda, é que quanto em
     -- quanto ele incrementa. SOMENTE UMA POR TABELA !!!
+    
+    -- Para checarmos o valor atual da identity, usamos "DBCC CHECKIDENT (tbl_livros, NORESEED);"
     ID_Livro SMALLINT PRIMARY KEY IDENTITY(100,1),
     Nome_Livro VARCHAR(50) NOT NULL,
     ISBN VARCHAR(30) NOT NULL UNIQUE,
