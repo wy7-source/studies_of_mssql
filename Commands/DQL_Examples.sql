@@ -68,3 +68,17 @@ SELECT Nome_Livro, ISBN
 INTO Livro_ISBN
 FROM tbl_livro
 where ID_Livro > 103;
+DROP TABLE Livro_ISBN;
+
+-- Usando Funções Agregadas...
+-- Funções que retornam alguns calculos simples juntos ao select...
+-- MIN
+SELECT MIN(Preco_Livro) FROM tbl_livro;
+-- MAX
+SELECT MAX(Preco_Livro) FROM tbl_livro;
+-- COUNT
+SELECT COUNT(*) FROM tbl_autores;
+-- AVG ( Average )
+SELECT AVG(Preco_Livro) FROM tbl_livro;
+-- SUM
+SELECT SUM(Preco_Livro) FROM tbl_livro;
