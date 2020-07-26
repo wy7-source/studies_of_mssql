@@ -59,3 +59,12 @@ SELECT Nome_Livro FROM tbl_livro;
 -- Um melhor use-case do Union, é quando por exemplo temos um supermercado, com produtos
 -- cadastrados em tabelas diferentes, separados por gênero (EX: limpeza, higiene, farináceos ),
 -- e quisessemos por exemplo fazer um relatório, com todos os produtos.
+
+-- Usando INTO
+-- Select com into, pode ser usado para criar uma tabela, apartir da saída de um select de
+-- outra tabela.
+-- Um use-case pode ser clonar as tabelas para fazer um backup...
+SELECT Nome_Livro, ISBN
+INTO Livro_ISBN
+FROM tbl_livro
+where ID_Livro > 103;
