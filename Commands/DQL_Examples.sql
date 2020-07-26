@@ -34,3 +34,13 @@ SELECT * FROM tbl_livro
 WHERE ID_Livro > 102 OR ID_Autor <= 3;
 SELECT * FROM tbl_livro
 WHERE ID_Livro > 102 OR NOT ID_Autor <= 3;
+
+-- Usando TOP
+-- Podemos usar para mostrar os primeiros registros da tabela,
+-- por posição numérica, ou percentual, relativo a quantidade de registros.
+SELECT TOP (3) Nome_Livro
+FROM tbl_livro;
+-- Se precisarmos fazer o inverso, podemos ordenar por DESC alfabeticamente.
+SELECT TOP (3) Nome_Livro
+FROM tbl_livros ORDER BY Nome_Livro DESC;
+
