@@ -42,5 +42,10 @@ SELECT TOP (3) Nome_Livro
 FROM tbl_livro;
 -- Se precisarmos fazer o inverso, podemos ordenar por DESC alfabeticamente.
 SELECT TOP (3) Nome_Livro
-FROM tbl_livros ORDER BY Nome_Livro DESC;
+FROM tbl_livro ORDER BY Nome_Livro DESC;
 
+-- Usando Alias (AS)
+-- Para apelidos para as colunas.
+SELECT Nome_Livro AS Livro,
+        ID_Autor AS Autor
+FROM tbl_livro;
