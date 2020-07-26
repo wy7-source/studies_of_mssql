@@ -27,3 +27,10 @@ FROM tbl_livro;
 -- filtragem...
 SELECT Nome_Livro, Data_Pub FROM tbl_livro WHERE ID_Autor = 1;
 SELECT ID_Autor, Nome_Autor FROM tbl_autores WHERE Sobrenome_Autor = 'Stanek';
+-- Com Condicionais
+SELECT * FROM tbl_livro
+WHERE ID_Livro > 102 AND ID_Autor < 3;
+SELECT * FROM tbl_livro
+WHERE ID_Livro > 102 OR ID_Autor <= 3;
+SELECT * FROM tbl_livro
+WHERE ID_Livro > 102 OR NOT ID_Autor <= 3;
