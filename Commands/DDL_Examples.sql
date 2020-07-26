@@ -66,15 +66,13 @@ CREATE TABLE tbl_editoras
 -- Equivalente ao DESCRIBLE do Mysql e do PostgreSQL, temos o:
 -- sp_help tbl_autores
 
-
 -- ABOUT ALTER TABLE
 -- DROP's
+-- ALTER TABLE tabela
+-- DROP CONSTRAINT constraint_name;
+-- Onde:
 ALTER TABLE tbl_livro
 DROP COLUMN ID_Autor;
-
-ALTER TABLE tabela
-DROP CONSTRAINT constraint_name;
-
 
 -- ADD's
 ALTER TABLE tbl_livro
@@ -92,9 +90,36 @@ REFERENCES tbl_editoras;
 -- è recomendavel fazer isso daqui sem ter dados na tabela
 -- senão vai ser complicado...
 ALTER TABLE tbl_livro
-ALTER COLUMN ID_Autor SMALLINT;
+ALTER COLUMN ISBN VARCHAR(25) NOT NULL;
 
 -- ABOUT DROP
 -- Só vai excluir se a tabela não tiver relacionamentos.
 -- Caso ela tenha, é necessário um Cascade...
 -- DROP TABLE nome_tabela;
+
+
+-- Campos Calculados
+-- Campos calculados, usam valores de outros campos,
+-- para calculos numéricos, e armazena o resultado em sí.
+
+-- Use-case: Quando temos um Carrinho de compras de um E-Commerce,
+-- e vamos ter um campo "total", referente a cada produto, seu preço
+-- unitário, e a quantidade dele.
+
+CREATE TABLE tbl_carrinho
+(
+    codProduto SMALLINT IDENTITY,
+    NomeProduto VARCHAR(20),
+    Preco MONEY,
+    Quant SMALLINT,
+    Total AS (Preco * Quant)
+);
+INSERT INTO tbl_carrinho VALUES('Livro A', 15.00, 2);
+INSERT INTO tbl_carrinho VALUES('Livro B', 18.00, 1);
+INSERT INTO tbl_carrinho VALUES('Livro C', 25.00, 3);
+INSERT INTO tbl_carrinho VALUES('Livro D', 25.00, 3);
+INSERT INTO tbl_carrinho VALUES('Livro E', 29.00, 2);
+INSERT INTO tbl_carrinho VALUES('Livro F', 13.00, 4);
+-- Como podemos ver, foi calculado o Total, perfeitamente.
+DROP TABLE tbl_carrinho;
+
