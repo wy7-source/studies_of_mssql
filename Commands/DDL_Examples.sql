@@ -156,19 +156,3 @@ EXECUTE SP_BINDRULE Rl_Preco, 'tbl_livro.Preco_Livro';
     SET Preco_Livro = 9.90
     WHERE ID_Livro = 101;
 */
-
--- ABOUT Concat Strings
-/*
-    Como propriamente dito, podemos por exemplo juntar o nome e sobrenome do Autor juntos:
-    Caso dê um erro, só vai nos retornar a coluna, mas o campo vem Null, e quando vem null,
-    a concatenação não funciona.
-*/
-SELECT Nome_Autor + ' ' + Sobrenome_Autor AS 'Nome Completo' FROM tbl_autores;
-SELECT 'Eu gosto do livro ' + Nome_Livro FROM tbl_livro WHERE ID_Autor = 2;
-
--- ABOUT Collation
--- Trata-se da ordem dos caracteres e suas codificações, relativo ao idioma do Banco e etc...
--- Um site legal para vermos as colações é o 'collation-charts.org'.
--- Vai que você tem um cliente grego, tem que pensar no banco dele até nisso.
-SELECT SERVERPROPERTY('Collation') as 'colação_usada';
-

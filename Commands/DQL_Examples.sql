@@ -18,13 +18,12 @@ SELECT Nome_Livro, ID_Editora FROM tbl_livro
 SELECT Nome_Livro, Preco_Livro FROM tbl_livro
  ORDER BY Preco_Livro DESC;
 
---  Usando Distinct ( algumas colunas tem valores duplicados )
+-- Usando Distinct ( algumas colunas tem valores duplicados )
 -- para exibir somente os valores individuais, usamos:
 SELECT DISTINCT ID_Autor
 FROM tbl_livro;
 
--- Usando WHERE
--- filtragem...
+-- Usando WHERE de filtragem...
 -- O operador '=', NÃO TRABALHA COM VALORES NULL... no caso, seria "... where id is null..."
 SELECT Nome_Livro, Data_Pub FROM tbl_livro WHERE ID_Autor = 1;
 SELECT ID_Autor, Nome_Autor FROM tbl_autores WHERE Sobrenome_Autor = 'Stanek';
@@ -36,14 +35,21 @@ WHERE ID_Livro > 102 OR ID_Autor <= 3;
 SELECT * FROM tbl_livro
 WHERE ID_Livro > 102 OR NOT ID_Autor <= 3;
 
--- Usando TOP
--- Podemos usar para mostrar os primeiros registros da tabela,
--- por posição numérica, ou percentual, relativo a quantidade de registros.
+-- Usando TOP c/ WITH TIES
+/*
+    Podemos usar para mostrar os primeiros registros da tabela,
+    por posição numérica, ou percentual, relativo a quantidade de registros.
+*/
 SELECT TOP (3) Nome_Livro
 FROM tbl_livro;
--- Se precisarmos fazer o inverso, podemos ordenar por DESC alfabeticamente.
-SELECT TOP (3) Nome_Livro
-FROM tbl_livro ORDER BY Nome_Livro DESC;
+/*
+    Uma coisa que pode acabar acontecendo, é quando por exemplo quisemos os 3 livros
+    mais caros, tivermos um 4 livro nessa mesma ordem decrescente, com o mesmo preço do
+    terceiro livro, ou seja, ele também faz parte indiretamente do nosso top 3.
+    Para resolver isso, usamos o "WITH TIES" ( Caso realmente tivessemos essa situação ):
+*/
+SELECT TOP (3) WITH TIES Nome_Livro, Preco_Livro
+FROM tbl_livro ORDER BY Preco_Livro DESC;
 
 -- Usando Alias (AS)
 -- Para apelidos para as colunas.
@@ -52,19 +58,25 @@ SELECT Nome_Livro AS Livro,
 FROM tbl_livro;
 
 -- Usando Union
--- Podemos juntar 2 saídas Selects, sem repetições...
--- Precisamos que ambas tabelas, tenham a mesma quantidade de colunas, tipos e ordem.
+/*
+    Podemos juntar 2 saídas Selects, sem repetições...
+    Precisamos que ambas tabelas, tenham a mesma quantidade de colunas, tipos e ordem.
+    
+    Use-case: Quando por exemplo temos um supermercado, com produtos
+    cadastrados em tabelas diferentes, separados por gênero (EX: limpeza, higiene, farináceos ),
+    e quisessemos por exemplo fazer um relatório, com todos os produtos.
+*/
 SELECT Nome_Autor FROM tbl_autores
 UNION
 SELECT Nome_Livro FROM tbl_livro;
--- Um melhor use-case do Union, é quando por exemplo temos um supermercado, com produtos
--- cadastrados em tabelas diferentes, separados por gênero (EX: limpeza, higiene, farináceos ),
--- e quisessemos por exemplo fazer um relatório, com todos os produtos.
 
 -- Usando INTO
--- Select com into, pode ser usado para criar uma tabela, apartir da saída de um select de
--- outra tabela.
--- Um use-case pode ser clonar as tabelas para fazer um backup...
+/*
+    Select com into, pode ser usado para criar uma tabela, apartir da saída de um select de
+    outra tabela.
+
+    Use-case: Pode ser clonar as tabelas para fazer um backup...
+*/
 SELECT Nome_Livro, ISBN
 INTO Livro_ISBN
 FROM tbl_livro
@@ -96,11 +108,13 @@ AND Preco_Livro BETWEEN 40.00 AND 70.00
 ORDER BY Data_Pub DESC;
 
 -- Usando Like e Not like
--- Usado para filtragens com a clausula Where, usamos alguns caracteres coringas:
--- '_' Qualquer caractere único.
--- '%' Qualquer cadeia de 0 ou mais caracteres.
--- "[]" Qualquer caracter único no intervalo ou conjunto especificado ([a-h];[aeiou])
--- "[^]" Qualquer caracter único no intervalo ou conjunto especificado (^[a-h];^[aeiou])
+/*
+    Usado para filtragens com a clausula Where, usamos alguns caracteres coringas:
+    * '_' Qualquer caractere único.
+    * '%' Qualquer cadeia de 0 ou mais caracteres.
+    * "[]" Qualquer caracter único no intervalo ou conjunto especificado ([a-h];[aeiou])
+    * "[^]" Qualquer caracter único no intervalo ou conjunto especificado (^[a-h];^[aeiou])
+*/
 SELECT * FROM tbl_livro
 WHERE Nome_Livro LIKE 'F%';
 -- o segundo caracter tem que ser i ou s...
@@ -114,9 +128,11 @@ WHERE Nome_Livro NOT LIKE '_i%';
 -- Usando Joins
 -- Quando usamos dados provenientes de outras tabelas baseados em relacionamento.
 ---- Inner Join
----- Retorna as linhas que tem correspondencia nas duas tabelas.
----- Podemos usar alias antes de declara-los, porque antes da execução da query, o 
----- bloco todo é avaliado, e se tiver um erro, não é executado...
+/*
+    Retorna as linhas que tem correspondencia nas duas tabelas.
+    Podemos usar alias antes de declara-los, porque antes da execução da query, o 
+    bloco todo é avaliado, e se tiver um erro, não é executado...
+*/
 SELECT * FROM tbl_livro
 INNER JOIN tbl_autores
 ON tbl_livro.ID_Autor = tbl_autores.ID_Autor; 
@@ -135,20 +151,26 @@ WHERE E.Nome_Editora LIKE 'O%'
 ORDER BY L.Preco_Livro ASC;
 
 ---- LEFT Join
----- Nos trás todas as linhas da tabela a esquerda, mesmo se não houver correspondencia
----- na tabela a direita.
----- Use-case, podemos usa-lo para trazer livros, mesmo sem autores.
+/*
+    Nos trás todas as linhas da tabela a esquerda, mesmo se não houver correspondencia
+    na tabela a direita.
+    
+    Use-case: Podemos usa-lo para trazer livros, mesmo sem autores.
+*/
 SELECT * FROM tbl_livro as Esquerda
 LEFT JOIN tbl_autores as Direita
 ON Esquerda.ID_Autor = Direita.Id_Autor;
 
 ---- RIGHT Join
----- Inverso do LEFT, nos trás todas as linhas da tabela a direita, mesmo se não houver correspondencia
----- na tabela a esquerda.
+/*
+    Inverso do LEFT, nos trás todas as linhas da tabela a direita, mesmo se não houver correspondencia
+    na tabela a esquerda.
+
+    Use-case: podemos usa-lo para trazer autores, mesmo sem livros.
+*/
 SELECT * FROM tbl_autores as Esquerda
 LEFT JOIN tbl_livro as Direita
 ON Esquerda.ID_Autor = Direita.Id_Autor;
----- Use-case, podemos usa-lo para trazer autores, mesmo sem livros.
 
 ---- Full Join
 ---- Faz um catado de tudo mesmo, de todas as tabelas que você passar.
@@ -159,10 +181,29 @@ ON Li.ID_Autor = Au.ID_Autor;
 
 
 -- Usando IN
--- Aplica-se a subconsultas, ou listas de valores.
--- Quando se trata de lista com um intervalo definido, é parecido com o Between...
+/*
+    Aplica-se a subconsultas, ou listas de valores.
+    Quando se trata de lista com um intervalo definido, é parecido com o Between...
+*/
 SELECT * FROM tbl_livro
 WHERE ID_Autor IN (1,2);
 -- Negativa
 SELECT * FROM tbl_livro
 WHERE ID_Autor NOT IN (1,2);
+
+-- Usando Concat Strings
+/*
+    Como propriamente dito, podemos por exemplo juntar o nome e sobrenome do Autor juntos:
+    Caso dê um erro, só vai nos retornar a coluna, mas o campo vem Null, e quando vem null,
+    a concatenação não funciona.
+*/
+SELECT Nome_Autor + ' ' + Sobrenome_Autor AS 'Nome Completo' FROM tbl_autores;
+SELECT 'Eu gosto do livro ' + Nome_Livro FROM tbl_livro WHERE ID_Autor = 2;
+
+-- ABOUT Collation
+/*
+    Trata-se da ordem dos caracteres ( também alfabética )e suas codificações, relativo ao idioma do Banco e etc...
+    Um site legal para vermos as colações é o 'collation-charts.org'.
+    Vai que você tem um cliente grego, tem que pensar no banco dele até nisso.
+*/
+SELECT SERVERPROPERTY('Collation') as 'colação_usada';
