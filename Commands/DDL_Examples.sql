@@ -1,7 +1,7 @@
 -- ABOUT DATABASE
 /*
-    A sintaxe é meio engraçada, pois precisamos especificar 
-    inclusive na criação do Banco, o tamanho do arquivo do banco, e seu path...
+    Esse arquivo é para demonstrações de uso dos comandos do grupo DDL, e também para
+    criar a estrutura do BD.
 */
 
 CREATE DATABASE db_Biblioteca
@@ -10,7 +10,8 @@ ON PRIMARY
 (
     -- Nome do Banco
     NAME= db_Biblioteca,
-    -- path do banco com extensão MDF
+    -- Daqui pra baixo é opcional, o MSSQL tem valores default pra isso, mas podemos por exemplo:
+    -- Especificar o path do banco com extensão MDF
     FILENAME= '/home/db_Biblioteca.MDF',
     -- Tamanho Inicial do arquivo do banco
     SIZE=6MB,
@@ -20,10 +21,12 @@ ON PRIMARY
     -- vai crescer, até atingir o valor máximo acima.
     FILEGROWTH=10%
 
-);
+)
+GO
 
 -- E assim como o MySql/ostgreSQL/OracleDB, usamos a Instrução USE.
-USE db_Biblioteca;
+USE db_Biblioteca
+GO
 
 /*
     Temos o comando especifico do SQL SERVER, que nos explicita
@@ -47,21 +50,24 @@ CREATE TABLE tbl_livro
     ID_Autor SMALLINT NOT NULL,
     Data_Pub DATETIME NOT NULL,
     Preco_Livro MONEY NOT NULL
-);
+)
+GO
 
 CREATE TABLE tbl_autores
 (
     ID_Autor SMALLINT PRIMARY KEY,
     Nome_Autor VARCHAR(50),
     Sobrenome_Autor VARCHAR(60)
-);
+)
+GO
 
 CREATE TABLE tbl_editoras
 (
     -- Por padrão, começa do numero 1, e incrementa de 1 em 1.
     ID_Editora SMALLINT PRIMARY KEY IDENTITY,
     Nome_Editora VARCHAR(50) NOT NULL
-);
+)
+GO
 
 /*
     Equivalente ao DESCRIBLE do Mysql e do PostgreSQL, temos o:
@@ -76,26 +82,29 @@ sp_help tbl_autores
 */
 -- Onde:
 ALTER TABLE tbl_livro
-DROP COLUMN ID_Autor;
+DROP COLUMN ID_Autor
+GO
 
 -- ADD's
 ALTER TABLE tbl_livro
 ADD ID_Autor SMALLINT NOT NULL
 CONSTRAINT fk_ID_Autor FOREIGN KEY (ID_Autor)
-REFERENCES tbl_autores;
+REFERENCES tbl_autores
+GO
 
 ALTER TABLE tbl_livro
 ADD ID_Editora SMALLINT NOT NULL
 CONSTRAINT fk_ID_Editora FOREIGN KEY (ID_Editora)
-REFERENCES tbl_editoras;
+REFERENCES tbl_editoras
+GO
 
 -- ALTER's
 /*
     É recomendavel fazer isso daqui sem ter dados na tabela
     senão vai ser complicado...
 */
-ALTER TABLE tbl_livro
-ALTER COLUMN ISBN VARCHAR(25) NOT NULL;
+-- ALTER TABLE tbl_livro
+-- ALTER COLUMN ISBN VARCHAR(25) NOT NULL;
 
 -- ABOUT DROP
 /*
@@ -120,15 +129,23 @@ CREATE TABLE tbl_carrinho
     Preco MONEY,
     Quant SMALLINT,
     Total AS (Preco * Quant)
-);
-INSERT INTO tbl_carrinho VALUES('Livro A', 15.00, 2);
-INSERT INTO tbl_carrinho VALUES('Livro B', 18.00, 1);
-INSERT INTO tbl_carrinho VALUES('Livro C', 25.00, 3);
-INSERT INTO tbl_carrinho VALUES('Livro D', 25.00, 3);
-INSERT INTO tbl_carrinho VALUES('Livro E', 29.00, 2);
-INSERT INTO tbl_carrinho VALUES('Livro F', 13.00, 4);
+)
+GO
+INSERT INTO tbl_carrinho VALUES('Livro A', 15.00, 2)
+GO
+INSERT INTO tbl_carrinho VALUES('Livro B', 18.00, 1)
+GO
+INSERT INTO tbl_carrinho VALUES('Livro C', 25.00, 3)
+GO
+INSERT INTO tbl_carrinho VALUES('Livro D', 25.00, 3)
+GO
+INSERT INTO tbl_carrinho VALUES('Livro E', 29.00, 2)
+GO
+INSERT INTO tbl_carrinho VALUES('Livro F', 13.00, 4)
+GO
 -- Como podemos ver, foi calculado o Total, perfeitamente.
-DROP TABLE tbl_carrinho;
+DROP TABLE tbl_carrinho
+GO
 
 -- ABOUT INDEX
 /*
@@ -137,7 +154,8 @@ DROP TABLE tbl_carrinho;
     Então se for pra atualizar com index, e a tabela ser pouco consultada, nem vale a pena.
 */
 CREATE INDEX Idx_Nome_Livro
-ON tbl_livro(Nome_Livro);
+ON tbl_livro(Nome_Livro)
+GO
 
 -- ABOUT Rules
 /* 
@@ -147,9 +165,11 @@ ON tbl_livro(Nome_Livro);
     
     Use-case: Não deixar livros com preços menores que 10 reais...
 */
-CREATE RULE Rl_Preco AS @VALOR > 10.00;
+CREATE RULE Rl_Preco AS @VALOR > 10.00
+GO
 -- Para vincular a regra a nossa tabela:
-EXECUTE SP_BINDRULE Rl_Preco, 'tbl_livro.Preco_Livro';
+EXECUTE SP_BINDRULE Rl_Preco, 'tbl_livro.Preco_Livro'
+GO
 -- Para testarmos se está funcionando:
 /*
     UPDATE tbl_livro
