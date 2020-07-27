@@ -1,7 +1,8 @@
 -- ABOUT DATABASE
-
--- A sintaxe é meio engraçada, pois precisamos especificar 
--- inclusive na criação do Banco, o tamanho do arquivo do banco, e seu path...
+/*
+    A sintaxe é meio engraçada, pois precisamos especificar 
+    inclusive na criação do Banco, o tamanho do arquivo do banco, e seu path...
+*/
 
 CREATE DATABASE db_Biblioteca
 -- Porque vamos utilizar o grupo de arquivos primário do SQL
@@ -21,23 +22,25 @@ ON PRIMARY
 
 );
 
--- E assim como o MySql, usamos a Instrução USE.
+-- E assim como o MySql/ostgreSQL/OracleDB, usamos a Instrução USE.
 USE db_Biblioteca;
 
--- Temos o comando especifico do SQL SERVER, que nos explicita
--- toda as infos de criação,status, o dono e id do banco, e etc...
-
--- sp_helpdb db_Biblioteca
+/*
+    Temos o comando especifico do SQL SERVER, que nos explicita
+    toda as infos de criação,status, o dono e id do banco, e etc...
+sp_helpdb db_Biblioteca
+*/
 
 -- ABOUT TABLES
 -- Temos aqui, a sintaxe bem padrão mesmo.
 CREATE TABLE tbl_livro
-(
-    -- Identity é o auto-increment do MySql/PostgreSQL/OracleDB, o primeiro
-    -- parametro, é o numero inicial, e a segunda, é que quanto em
-    -- quanto ele incrementa. SOMENTE UMA POR TABELA !!!
+(/*
+    Identity é o auto-increment do MySql/PostgreSQL/OracleDB, o primeiro
+    parametro, é o numero inicial, e a segunda, é que quanto em
+    quanto ele incrementa. SOMENTE UMA POR TABELA !!!
 
-    -- Para checarmos o valor atual da identity, usamos "DBCC CHECKIDENT (tbl_livros, NORESEED);"
+    Para checarmos o valor atual da identity, usamos "DBCC CHECKIDENT (tbl_livros, NORESEED);"
+*/
     ID_Livro SMALLINT PRIMARY KEY IDENTITY(100,1),
     Nome_Livro VARCHAR(50) NOT NULL,
     ISBN VARCHAR(30) NOT NULL UNIQUE,
@@ -60,13 +63,17 @@ CREATE TABLE tbl_editoras
     Nome_Editora VARCHAR(50) NOT NULL
 );
 
--- Equivalente ao DESCRIBLE do Mysql e do PostgreSQL, temos o:
--- sp_help tbl_autores
+/*
+    Equivalente ao DESCRIBLE do Mysql e do PostgreSQL, temos o:
+sp_help tbl_autores
+*/
 
 -- ABOUT ALTER TABLE
--- DROP's
--- ALTER TABLE tabela
--- DROP CONSTRAINT constraint_name;
+/*
+    DROP's
+    ALTER TABLE tabela
+    DROP CONSTRAINT constraint_name;
+*/
 -- Onde:
 ALTER TABLE tbl_livro
 DROP COLUMN ID_Autor;
@@ -83,23 +90,29 @@ CONSTRAINT fk_ID_Editora FOREIGN KEY (ID_Editora)
 REFERENCES tbl_editoras;
 
 -- ALTER's
--- è recomendavel fazer isso daqui sem ter dados na tabela
--- senão vai ser complicado...
+/*
+    É recomendavel fazer isso daqui sem ter dados na tabela
+    senão vai ser complicado...
+*/
 ALTER TABLE tbl_livro
 ALTER COLUMN ISBN VARCHAR(25) NOT NULL;
 
 -- ABOUT DROP
--- Só vai excluir se a tabela não tiver relacionamentos.
--- Caso ela tenha, é necessário um Cascade...
--- DROP TABLE nome_tabela;
+/*
+    Só vai excluir se a tabela não tiver relacionamentos.
+    Caso ela tenha, é necessário um Cascade...
+DROP TABLE nome_tabela;
+*/
 
 -- Campos Calculados
--- Campos calculados, usam valores de outros campos,
--- para calculos numéricos, e armazena o resultado em sí.
+/*
+    Campos calculados, usam valores de outros campos,
+    para calculos numéricos, e armazena o resultado em sí.
 
--- Use-case: Quando temos um Carrinho de compras de um E-Commerce,
--- e vamos ter um campo "total", referente a cada produto, seu preço
--- unitário, e a quantidade dele.
+    Use-case: Quando temos um Carrinho de compras de um E-Commerce,
+    e vamos ter um campo "total", referente a cada produto, seu preço
+    unitário, e a quantidade dele.
+*/
 CREATE TABLE tbl_carrinho
 (
     codProduto SMALLINT IDENTITY,
@@ -118,8 +131,28 @@ INSERT INTO tbl_carrinho VALUES('Livro F', 13.00, 4);
 DROP TABLE tbl_carrinho;
 
 -- ABOUT INDEX
--- Index permitem que os bancos encontrem as colunas mais rapidamente ( em BD's grantes ).
--- Ideal para tabelas com muitas consultas, pois é um pouco custoso pra atualizar.
--- Então se for pra atualizar com index, e a tabela ser pouco consultada, nem vale a pena.
+/*
+    Index permitem que os bancos encontrem as colunas mais rapidamente ( em BD's grantes ).
+    Ideal para tabelas com muitas consultas, pois é um pouco custoso pra atualizar.
+    Então se for pra atualizar com index, e a tabela ser pouco consultada, nem vale a pena.
+*/
 CREATE INDEX Idx_Nome_Livro
 ON tbl_livro(Nome_Livro);
+
+-- ABOUT Rules
+/* 
+    Como propriamente dito, é usado para setar um comportamento
+    para uma coluna, ou valores inválidos que o banco não deve aceitar naquela coluna.
+    Útil também com triggers.
+    
+    Use-case: Não deixar livros com preços menores que 10 reais...
+*/
+CREATE RULE Rl_Preco AS @VALOR > 10.00;
+-- Para vincular a regra a nossa tabela:
+EXECUTE SP_BINDRULE Rl_Preco, 'tbl_livro.Preco_Livro';
+-- Para testarmos se está funcionando:
+/*
+    UPDATE tbl_livro
+    SET Preco_Livro = 9.90
+    WHERE ID_Livro = 101;
+*/
