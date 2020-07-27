@@ -166,3 +166,9 @@ EXECUTE SP_BINDRULE Rl_Preco, 'tbl_livro.Preco_Livro';
 SELECT Nome_Autor + ' ' + Sobrenome_Autor AS 'Nome Completo' FROM tbl_autores;
 SELECT 'Eu gosto do livro ' + Nome_Livro FROM tbl_livro WHERE ID_Autor = 2;
 
+-- ABOUT Collation
+-- Trata-se da ordem dos caracteres e suas codificações, relativo ao idioma do Banco e etc...
+-- Um site legal para vermos as colações é o 'collation-charts.org'.
+-- Vai que você tem um cliente grego, tem que pensar no banco dele até nisso.
+SELECT SERVERPROPERTY('Collation') as 'colação_usada';
+
