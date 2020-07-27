@@ -1,0 +1,7 @@
+Vou guardar aqui alguns comandos úteis, sem ser necessariamente SQL...
+
+Para fazer backup por exemplo:
+
+BACKUP DATABASE db_Biblioteca
+TO DISK = '/home/db_Biblioteca.bak';
+GO
