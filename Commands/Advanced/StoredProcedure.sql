@@ -87,7 +87,8 @@ EXEC Sp_Params @par2 = 'Laranja', @par1 = 25
 */
 CREATE PROCEDURE Sp_Livro_Valor_Total
 (
-    @Quantidade SMALLINT,
+    -- Podemos colocar valores padrão, caso não sejam passados:
+    @Quantidade SMALLINT = 1,
     @ID SMALLINT
 )
 AS
@@ -110,5 +111,3 @@ AS
 EXEC Sp_Cadastrar_Editora @nome = 'Nobel';
 -- Para checarmos se deu certo:
 SELECT * FROM tbl_editoras;
-
-
