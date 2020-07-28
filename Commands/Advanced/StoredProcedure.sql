@@ -58,3 +58,23 @@ sp_rename 'Sp_Teste_Autor', 'Sp_Livro_Autor';
 
 -- Para dropa-la:
 DROP PROCEDURE Sp_Livro_Autor;
+
+
+-----------------------EXEMPLO-2--------------------------
+/*
+    Vale salientar que procedures aceitam também parametros:
+*/
+
+CREATE PROCEDURE SP_Params
+(@par1 int, @par2 VARCHAR(20))
+AS 
+BEGIN
+    SELECT @par1
+    SELECT @par2
+END;
+
+-- Podemos passar os parametros na ordem que foram criadas:
+EXEC Sp_Params 26, 'Laranja'
+
+-- Ou especificando quem é quem mesmo:
+EXEC Sp_Params @par2 = 'Laranja', @par1 = 25
