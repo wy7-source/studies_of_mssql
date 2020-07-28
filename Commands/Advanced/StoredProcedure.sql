@@ -78,3 +78,37 @@ EXEC Sp_Params 26, 'Laranja'
 
 -- Ou especificando quem é quem mesmo:
 EXEC Sp_Params @par2 = 'Laranja', @par1 = 25
+
+
+/*
+    Outro exemplo só pra fixar.
+    Vamos aqui indicar um id de livro, e uma variável quantidade, para que o livro me retorne o valor
+    total que vou pagar nessa quantidade de livros.
+*/
+CREATE PROCEDURE Sp_Livro_Valor_Total
+(
+    @Quantidade SMALLINT,
+    @ID SMALLINT
+)
+AS
+    SELECT Nome_Livro as Livro, Preco_Livro * @Quantidade AS Preço
+    FROM tbl_livro
+    WHERE ID_Livro = @ID;
+
+-- Para testarmos isso:
+EXEC Sp_Livro_Valor_Total @ID = 103, @Quantidade = 10;
+
+
+-- E com INSERT, como fica?
+CREATE PROCEDURE Sp_Cadastrar_Editora 
+(@nome VARCHAR (50))
+AS
+    INSERT INTO tbl_editoras (Nome_Editora)
+    VALUES (@nome);
+
+-- É só respeitar os campos, e voila
+EXEC Sp_Cadastrar_Editora @nome = 'Nobel';
+-- Para checarmos se deu certo:
+SELECT * FROM tbl_editoras;
+
+

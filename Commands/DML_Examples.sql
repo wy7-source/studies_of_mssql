@@ -12,11 +12,11 @@ GO
 -- Autores
 INSERT INTO tbl_autores
 VALUES
-(1, 'Daniel', 'Barret'),
-(2, 'Gerald', 'Carter'),
-(3, 'Mark', 'Sobell'),
-(4, 'William', 'Stanek'),
-(5, 'Richard', 'Blum')
+(101, 'Daniel', 'Barret'),
+(102, 'Gerald', 'Carter'),
+(103, 'Mark', 'Sobell'),
+(104, 'William', 'Stanek'),
+(105, 'Richard', 'Blum')
 GO
 
 -- Editoras
