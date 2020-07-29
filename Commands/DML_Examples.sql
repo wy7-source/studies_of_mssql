@@ -32,12 +32,12 @@ GO
 -- Livros
 INSERT INTO tbl_livro (Nome_Livro, ISBN, Data_Pub, Preco_Livro, ID_Autor, ID_Editora)
 VALUES
-('Linux Command Line and Shell Scripting','9781118983843', '20150109', 68.35, 5, 4),
-('SSH, the Secure Shell','9780596008956', '20050517', 58.30, 1, 2),
-('Using Samba','9780596002565', '20031221', 61.45, 2, 2),
-('Fedora and Red Hat Linux', '9780133477436', '20140110', 62.24, 3, 1),
-('Windows Server 2012 Inside Out','9780735666313', '20130125', 66.80, 4, 3),
-('Microsoft Exchange Server 2010','9780735640610', '20101201', 45.30, 4, 3)
+('Linux Command Line and Shell Scripting','9781118983843', '20150109', 68.35, 105, 4),
+('SSH, the Secure Shell','9780596008956', '20050517', 58.30, 101, 2),
+('Using Samba','9780596002565', '20031221', 61.45, 102, 2),
+('Fedora and Red Hat Linux', '9780133477436', '20140110', 62.24, 103, 1),
+('Windows Server 2012 Inside Out','9780735666313', '20130125', 66.80, 104, 3),
+('Microsoft Exchange Server 2010','9780735640610', '20101201', 45.30, 104, 3)
 GO
 
 

@@ -111,3 +111,50 @@ AS
 EXEC Sp_Cadastrar_Editora @nome = 'Nobel';
 -- Para checarmos se deu certo:
 SELECT * FROM tbl_editoras;
+
+-----------------------EXEMPLO-3--------------------------
+/*
+    Como funções. podemos ter um retorno das stored procedures.
+    No caso, precisamos armazenar esse retorno em alguma variável...
+
+    Use-case: Tratar o erro antes mesmo de chegar na aplicação, deixando a aplicação considerar
+    o melhor cenário possivel ( incomum, mas é uma possibilidade ).
+*/
+ALTER PROCEDURE Sp_Livro_Valor_Total 
+(
+  @Quantidade SMALLINT, @Cod SMALLINT = -10,
+  @ID SMALLINT
+)
+AS
+  SET NOCOUNT ON
+  IF @ID >= 100
+    BEGIN
+      SELECT Nome_Livro as Livro, Preco_Livro * @Quantidade AS Preço
+      FROM tbl_Livros
+      WHERE ID_Livro = @ID
+      RETURN 1
+    END
+  ELSE
+RETURN @Cod
+-- Para executarmos, temos algumas coisas a mais para considerar...
+DECLARE @Codigo INT
+EXEC @Codigo = sp_LivroValor @ID = 103, @Quantidade = 10
+PRINT @Codigo
+/*
+    E caso retorne o -10, podemos ter uma exceção de código por exemplo...
+*/
+
+
+-----------------------EXEMPLO-4--------------------------
+/*
+    Caso você precise alterar um valor de uma variável através de uma stored procedure.
+    Teremos um exemplo simples, onde uma variável é passada para a procedure
+*/
+CREATE PROCEDURE Sp_Mult (@par1 AS INT OUTPUT)
+AS
+SELECT @par1 * 2
+RETURN
+
+DECLARE @valor as INT = 15
+EXEC Sp_Mult @valor OUTPUT
+PRINT @valor
