@@ -9,10 +9,11 @@ que ajude a montar um resultado de uma query.
 
     Funções, difernete de Stored Procedures, recebem parametros e retornam valores.
     Existem alguns tipos de retornos como:
-    * Escalar: Quando passamos um parametro e temos um retorno.
+    * Escalar: Temos a possibilidade de ter um código bem complexo, e um retorno com valor.
     * Tabela Embutida (Inline): Quando o retorno é uma tabela mesmo, mas com a 
 possibilidade de receber parametros.
-
+    * Valor de Tabela com Várias Instruções: Agora e se juntarmos a possibilidade
+de conter códigos complexos com o retorno sendo uma tabela, é isso que acontece.
 
 */
 
@@ -96,3 +97,30 @@ GO
 -- Agora para usarmos:
 SELECT Nome_Livro, Nome_Autor
 FROM f_retorna_livros(45.00)
+
+
+
+-------------EXEMPLO-VALOR-TABELA-COM-VARIAS-INSTRUÇÕES-------------
+-- Podemos deixar muito mais complexo, mas é um exemplo do uso
+CREATE FUNCTION f_multi_table()
+-- Aqui não se limita ao tipo de retorno "Tabela", mas também a estrutura dessa tabela.
+RETURNS @valores TABLE
+(
+    Nome_Livro VARCHAR(50),
+    Data_Pub DATETIME, 
+    Nome_Editora VARCHAR(50),
+    Preco_Livro MONEY
+)
+AS
+BEGIN
+INSERT @valores (Nome_Livro, Data_Pub,Nome_Editora,Preco_Livro)
+-- Aqui seria o VALUES
+    SELECT L.Nome_Livro, L.Data_Pub, E.Nome_Editora, L.Preco_Livro
+    FROM tbl_livro AS L
+    INNER JOIN tbl_editoras AS E
+    ON L.ID_Editora = E.ID_Editora
+RETURN
+END
+
+-- Para usarmos a Função:
+SELECT * FROM f_multi_table()
