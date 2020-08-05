@@ -10,7 +10,6 @@ uma operação que modifique o DB ( sobre o DML nesse caso ).
 use db_Biblioteca
 GO
 
-
 ------------EXEMPLO-TRIGGER-AFTER----------------
 CREATE TRIGGER trgg_after_teste
 ON tbl_editoras
@@ -60,3 +59,17 @@ GO
     Claro que o uso disso pode ser para validações e desvios de fluxos, onde uma Rule
 não seja suficiente. Muito poderoso se bem usado.
 */
+
+-- Para desativar ou habilitar uma Tigger
+
+ALTER TABLE tbl_editoras
+DISABLE TRIGGER trgg_instedof
+GO
+
+-- Para verificarmos as triggers existentes nas tabelas:
+EXEC sp_helptrigger @tabname=tbl_editoras
+GO
+
+-- Ou no banco todo mesmo:
+SELECT * FROM sys.triggers WHERE is_disabled = 0
+GO
