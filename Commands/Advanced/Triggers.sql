@@ -54,11 +54,7 @@ GO
 -- Quer ver?
 SELECT * FROM tbl_autores
 GO
-/*
-    Tã dãa, nada!.
-    Claro que o uso disso pode ser para validações e desvios de fluxos, onde uma Rule
-não seja suficiente. Muito poderoso se bem usado.
-*/
+-- Tã dãa, nada!.
 
 -- Para desativar ou habilitar uma Tigger
 
@@ -72,4 +68,36 @@ GO
 
 -- Ou no banco todo mesmo:
 SELECT * FROM sys.triggers WHERE is_disabled = 0
+GO
+
+/*
+    Claro que o uso disso pode ser para validações e desvios de fluxos, onde uma Rule
+não seja suficiente. Muito poderoso se bem usado. Vamos usar a função update():
+*/
+CREATE TRIGGER trgg_after_autores
+ON tbl_autores
+AFTER INSERT, UPDATE -- Pode valer para mais de uma instrução DML...
+AS
+IF UPDATE(Nome_Autor)
+-- Vale ressaltar que mesmo não tendo afetado nenhuma coluna, o resultado é TRUE.
+    BEGIN
+        PRINT 'O nome do autor foi alterado.'
+    END
+ELSE
+    BEGIN
+        PRINT 'Nome do autor não foi alterado.'
+    END
+GO
+
+-- Então, quando atualiazmos o nome do autor:
+UPDATE tbl_autores
+SET Nome_Autor = 'João'
+WHERE ID_Autor = 101
+GO
+
+select * from tbl_autores;
+-- E quando não fazemos isso:
+UPDATE tbl_autores
+SET Sobrenome_Autor = 'Da Silva'
+WHERE ID_Autor = 103
 GO
