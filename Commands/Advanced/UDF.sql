@@ -1,18 +1,24 @@
 /*
     Funções, diferente de Stored Procedures, não alteram nada fora do seu 
 escopo interno ( Ou seja não temos INSERT, DELETE nem UPDATE em funções... ).
+    Artigo bem legal explicando essa diferença: https://pt.stackoverflow.com/questions/60323/qual-a-diferen%C3%A7a-entre-function-e-procedure
 
     São especificamente usadas quando você precisa fazer um processamento
 que ajude a montar um resultado de uma query.
-
-    Temos uma nova Database de exemplo aqui, de uma "Escola", de tabela unica,
-logo aqui abaixo.
+    Ou precisa de como se fosse uma "View" que aceite parametros, e etc...
 
     Funções, difernete de Stored Procedures, recebem parametros e retornam valores.
     Existem alguns tipos de retornos como:
     * Escalar: Quando passamos um parametro e temos um retorno.
+    * Tabela Embutida (Inline): Quando o retorno é uma tabela mesmo, mas com a 
+possibilidade de receber parametros.
 
 
+*/
+
+/*
+    Temos uma nova Database de exemplo aqui, de uma "Escola", de tabela unica,
+só pra uma ilustração do uso de funções, em outro cenário mesmo.
 */
 
 CREATE DATABASE db_Escola
@@ -51,7 +57,8 @@ VALUES
     ('Rose', 8, 8, 8, 10),
     ('Soares', 10, 9, 9, 9)
 GO
------------------------EXEMPLO------------------------
+
+-----------------------EXEMPLO-ESCALAR------------------------
 CREATE FUNCTION f_nota_media(@nome VARCHAR(20))
 RETURNS REAL -- O tipo do valor que será retornado vem aqui.
 AS
@@ -60,8 +67,32 @@ BEGIN
     SELECT @media = (Nota1 + Nota2 + Nota3 + Nota4 * 2) / 5.00
     FROM tbl_alunos
     WHERE nome_aluno = @nome
-    RETURN @media -- A nossa Variável de retorno...
+    RETURN @media
+-- A nossa Variável de retorno...
 END
 
 -- E para testarmo o retorno:
 SELECT dbo.f_nota_media('Soares');
+
+-----------------------EXEMPLO-INLINE------------------------
+-- Voltando a nossa Biblioteca, podemos ter uma "View", que tem um retorno volátil.
+USE db_Biblioteca
+
+CREATE FUNCTION f_retorna_livros(@valor REAL)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT L.Nome_Livro, A.Nome_Autor, E.Nome_Editora
+    FROM tbl_livro AS L
+    INNER JOIN tbl_autores AS A
+    ON L.ID_Autor = A.ID_Autor
+    INNER JOIN tbl_editoras AS E
+    ON L.ID_Editora = E.ID_Editora
+    WHERE L.Preco_Livro > @valor
+)
+GO
+
+-- Agora para usarmos:
+SELECT Nome_Livro, Nome_Autor
+FROM f_retorna_livros(45.00)
