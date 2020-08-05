@@ -101,3 +101,50 @@ UPDATE tbl_autores
 SET Sobrenome_Autor = 'Da Silva'
 WHERE ID_Autor = 103
 GO
+
+---------EXEMPLO-TRIGGER-RECURSIVA-AFTER---------
+/*
+    Uma possibilidade que temos, são triggers aninhadas,
+que são triggers que chamam outras triggers ( No máximo 32 recursividades ).
+    E também, triggers que chamam a si mesmas, e para ilustrar isso, vamos
+exemplificar, preenchendo uma tabela de campo unico, com um único insert, 10 posições...
+*/
+
+-- Antes disso, precisamos habilitar no nosso servidor, o ANINHAMENTO entre triggers:
+EXEC sp_configure 'Nested Triggers', 1
+GO
+RECONFIGURE
+GO
+-- Vamos precisar também habilitar agora a funcinoalidade de recursividade no DB
+ALTER DATABASE db_Biblioteca
+SET RECURSIVE_TRIGGERS ON
+GO
+
+-- Vamos criar a tabela de exemplo:
+CREATE TABLE tbl_trgg_rec( ID SMALLINT PRIMARY KEY)
+GO
+
+-- A nossa trigger recursiva
+-- LEMBRE-SE DE USAR UM DELIMITADOR DA RECURSIVIDADE ( se bem que o servidor limita a 32, mas enfim... ) 
+CREATE TRIGGER trgg_rec ON tbl_trgg_rec
+AFTER INSERT
+AS
+DECLARE @n INT
+SELECT @n = MAX(ID) FROM tbl_trgg_rec
+IF @n < 15
+    BEGIN  
+        INSERT INTO tbl_trgg_rec SELECT MAX(ID) + 1 FROM tbl_trgg_rec
+    END
+ELSE
+    BEGIN  
+       PRINT 'Terminado'
+    END
+
+GO
+
+-- Para fazer isso acontecer:
+INSERT INTO tbl_trgg_rec VALUES (4)
+GO
+
+-- E voilá:
+SELECT * FROM tbl_trgg_rec;
