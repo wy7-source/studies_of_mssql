@@ -176,3 +176,9 @@ GO
     SET Preco_Livro = 9.90
     WHERE ID_Livro = 101;
 */
+
+-- Para renomearmos a tabela:
+-- sp_rename 'tbl_livro', 'Livros';
+
+-- Ou uma coluna:
+-- sp_rename 'tbl_livro.Nome_Livro', 'Livro', 'COLUMN';
